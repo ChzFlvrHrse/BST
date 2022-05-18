@@ -145,30 +145,63 @@ function inOrderPredecessor(rootNode, target) {
   }
   helper(rootNode);
   if(array.indexOf(target)){
-  return array[array.indexOf(target) - 1];
+    return array[array.indexOf(target) - 1];
   }
   else return null;
 }
 
 function deleteNodeBST(rootNode, target) {
   // Do a traversal to find the node. Keep track of the parent
-
+  let parentNode = getParentNode(rootNode, target);
   // Undefined if the target cannot be found
+  if (parentNode === undefined) {
+    return undefined;
+  }
+
+  let node;
+  let bool;
 
   // Set target based on parent
 
+  if (parentNode && parentNode.left.val === target) node = parentNode.left;
+  else if (parentNode && parentNode.right.val === target) node = parentNode.right;
+
+  if (node = parentNode.left) {
+    bool = true;
+  } else {
+      bool = false;
+  }
+
   // Case 0: Zero children and no parent:
   //   return null
-
+  if (!parentNode && !node.left && !node.right) {
+    return null;
+  }
   // Case 1: Zero children:
   //   set the parent that points to it to null
-
+  if (parentNode && !node.left && !node.right) {
+    if (parentNode.left.val === target) {
+      parentNode.left = null;
+    } else if (parentNode.right.val === target) {
+        parentNode.right = null;
+    }
+  }
   // Case 2: Two children:
   //   set the value to its in-order predecessor, then delete the predecessor
-
+  if (parentNode && node.right && node.left) {
+    let inOrder = inOrderPredecessor(rootNode, target);
+    deleteNodeBST(rootNode, inOrder);
+    node.val = inOrder;
+  }
   // Case 3: One child:
   //   Make the parent point to the child
-
+  if (parentNode && (node.left || node.right)) {
+    if (node.left) {
+      parentNode.right = node.left;
+    } else {
+        parentNode.left = node.right;
+    }
+  }
 }
 
 module.exports = {
