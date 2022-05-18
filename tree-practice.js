@@ -64,12 +64,38 @@ function findMaxBT (rootNode) {
 }
 
 function getHeight (rootNode) {
-  // Your code here
-  
+  let stackLeft = [];
+  let stackRight = [];
+  let currentLeft = rootNode;
+  // let currentLeft;
+  let currentRight = rootNode;
+  while (currentLeft.left) {
+    stackLeft.push(currentLeft.left);
+    currentLeft = currentLeft.left;
+  }
+  while (currentRight.right) {
+    stackRight.push(currentRight.right);
+    currentRight = currentRight.right;
+  }
+  if (stackLeft.length > stackRight.length) return stackLeft.length;
+  else return stackRight.length;
 }
 
 function countNodes (rootNode) {
-  // Your code here
+  let currentNode;
+  let stack = [rootNode];
+  let counter = 0;
+  while (stack.length) {
+    currentNode = stack.pop()
+    counter++;
+    if (currentNode.left) {
+      stack.push(currentNode.left);
+    }
+    if (currentNode.right) {
+      stack.push(currentNode.right);
+    }
+  }
+  return counter;
 }
 
 function balancedTree (rootNode) {
