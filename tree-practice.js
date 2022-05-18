@@ -99,7 +99,20 @@ function countNodes (rootNode) {
 }
 
 function balancedTree (rootNode) {
-  // Your code here
+  let stackLeft = [];
+  let stackRight = [];
+  let currentLeft = rootNode;
+  let currentRight = rootNode;
+
+  while (currentLeft.left) {
+    stackLeft.push(currentLeft.left);
+    currentLeft = currentLeft.left;
+  }
+  while (currentRight.right) {
+    stackRight.push(currentRight.right);
+    currentRight = currentRight.right;
+  }
+  return stackLeft.length === stackRight.length;
 }
 
 function getParentNode (rootNode, target) {
