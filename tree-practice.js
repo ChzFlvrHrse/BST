@@ -104,6 +104,7 @@ function balancedTree (rootNode) {
 
 function getParentNode (rootNode, target) {
   // Your code here
+  
 }
 
 function inOrderPredecessor (rootNode, target) {
