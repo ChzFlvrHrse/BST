@@ -4,66 +4,66 @@ const { BinarySearchTree, TreeNode } = require('./binary-search-tree.js');
 
 // Practice problems on binary trees
 
-function findMinBST (rootNode) {
+function findMinBST(rootNode) {
   // Your code here
   let currentNode = rootNode;
-  while(currentNode.left){
+  while (currentNode.left) {
     currentNode = currentNode.left;
   }
   return currentNode.val;
 }
 
-function findMaxBST (rootNode) {
+function findMaxBST(rootNode) {
   // Your code here
   let currentNode = rootNode;
-  while(currentNode.right){
+  while (currentNode.right) {
     currentNode = currentNode.right;
   }
   return currentNode.val;
 }
 
-function findMinBT (rootNode) {
+function findMinBT(rootNode) {
   // Your code here
   let currentMin = rootNode;
   let currentNode;
   let queue = [rootNode];
 
-  while(queue.length){
+  while (queue.length) {
     currentNode = queue.shift();
-    if(currentNode.val <= currentMin.val){
+    if (currentNode.val <= currentMin.val) {
       currentMin = currentNode;
     }
-    if(currentNode.left){
+    if (currentNode.left) {
       queue.push(currentNode.left)
     }
-    if(currentNode.right){
+    if (currentNode.right) {
       queue.push(currentNode.right);
     }
   }
   return currentMin.val;
 }
 
-function findMaxBT (rootNode) {
+function findMaxBT(rootNode) {
   let currentMax = rootNode;
   let currentNode;
   let queue = [rootNode];
 
-  while(queue.length){
+  while (queue.length) {
     currentNode = queue.shift();
-    if(currentNode.val >= currentMax.val){
+    if (currentNode.val >= currentMax.val) {
       currentMax = currentNode;
     }
-    if(currentNode.left){
+    if (currentNode.left) {
       queue.push(currentNode.left)
     }
-    if(currentNode.right){
+    if (currentNode.right) {
       queue.push(currentNode.right);
     }
   }
   return currentMax.val;
 }
 
-function getHeight (rootNode) {
+function getHeight(rootNode) {
   let stackLeft = [];
   let stackRight = [];
   let currentLeft = rootNode;
@@ -81,7 +81,7 @@ function getHeight (rootNode) {
   else return stackRight.length;
 }
 
-function countNodes (rootNode) {
+function countNodes(rootNode) {
   let currentNode;
   let stack = [rootNode];
   let counter = 0;
@@ -98,7 +98,7 @@ function countNodes (rootNode) {
   return counter;
 }
 
-function balancedTree (rootNode) {
+function balancedTree(rootNode) {
   let stackLeft = [];
   let stackRight = [];
   let currentLeft = rootNode;
@@ -115,15 +115,40 @@ function balancedTree (rootNode) {
   return stackLeft.length === stackRight.length;
 }
 
-function getParentNode (rootNode, target) {
-  // Your code here
-  
+function getParentNode(rootNode, target) {
+  let queue = [rootNode];
+  if (rootNode.val === target) return null;
+
+  while (queue.length) {
+    let node = queue.shift();
+    if(node.left){
+    if (node.left.val === target) return node;
+    else queue.push(node.left);
+    }
+    if(node.right){
+    if (node.right.val === target) return node;
+    else queue.push(node.right)
+    }
+  }
+  return undefined;
 }
 
-function inOrderPredecessor (rootNode, target) {
-  // Your code here
-}
 
+function inOrderPredecessor(rootNode, target) {
+  // Your code here
+  let array = [];
+  const helper = currentNode => {
+    if (!currentNode) return;
+    helper(currentNode.left);
+    array.push(currentNode.val);
+    helper(currentNode.right);
+  }
+  helper(rootNode);
+  if(array.indexOf(target)){
+  return array[array.indexOf(target) - 1];
+  }
+  else return null;
+}
 
 function deleteNodeBST(rootNode, target) {
   // Do a traversal to find the node. Keep track of the parent
@@ -147,14 +172,14 @@ function deleteNodeBST(rootNode, target) {
 }
 
 module.exports = {
-    findMinBST,
-    findMaxBST,
-    findMinBT,
-    findMaxBT,
-    getHeight,
-    countNodes,
-    balancedTree,
-    getParentNode,
-    inOrderPredecessor,
-    deleteNodeBST
+  findMinBST,
+  findMaxBST,
+  findMinBT,
+  findMaxBT,
+  getHeight,
+  countNodes,
+  balancedTree,
+  getParentNode,
+  inOrderPredecessor,
+  deleteNodeBST
 }
