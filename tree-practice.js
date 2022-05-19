@@ -170,6 +170,7 @@ function deleteNodeBST(rootNode, target) {
           pos = 'right';
       }
   }
+  
   // Undefined if the target cannot be found
   if (node === null) return undefined;
   // Set target based on parent
