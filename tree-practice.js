@@ -121,13 +121,13 @@ function getParentNode(rootNode, target) {
 
   while (queue.length) {
     let node = queue.shift();
-    if(node.left){
-    if (node.left.val === target) return node;
-    else queue.push(node.left);
+    if (node.left) {
+      if (node.left.val === target) return node;
+      else queue.push(node.left);
     }
-    if(node.right){
-    if (node.right.val === target) return node;
-    else queue.push(node.right)
+    if (node.right) {
+      if (node.right.val === target) return node;
+      else queue.push(node.right)
     }
   }
   return undefined;
@@ -144,7 +144,7 @@ function inOrderPredecessor(rootNode, target) {
     helper(currentNode.right);
   }
   helper(rootNode);
-  if(array.indexOf(target)){
+  if (array.indexOf(target)) {
     return array[array.indexOf(target) - 1];
   }
   else return null;
@@ -152,55 +152,61 @@ function inOrderPredecessor(rootNode, target) {
 
 function deleteNodeBST(rootNode, target) {
   // Do a traversal to find the node. Keep track of the parent
-  let parentNode = getParentNode(rootNode, target);
-  // Undefined if the target cannot be found
-  if (parentNode === undefined) {
-    return undefined;
+  let node = null;
+  let parent = null;
+  let current = rootNode;
+  let pos = '';
+  while (current) {
+      if (current.val === target) {
+          node = current;
+          break;
+      }
+      parent = current;
+      if (target < current.val) {
+          current = current.left;
+          pos = 'left';
+      } else {
+          current = current.right;
+          pos = 'right';
+      }
   }
-
-  let node;
-  let bool;
-
+  // Undefined if the target cannot be found
+  if (node === null) return undefined;
   // Set target based on parent
 
-  if (parentNode && parentNode.left.val === target) node = parentNode.left;
-  else if (parentNode && parentNode.right.val === target) node = parentNode.right;
-
-  if (node = parentNode.left) {
-    bool = true;
-  } else {
-      bool = false;
+  if (!node.left && !node.right) {
+      // Case 0: Zero children and no parent:
+      //   return null
+      if (!parent) return null;
+      // Case 1: Zero children:
+      //   set the parent that points to it to null
+      else {
+          parent[pos] = null;
+      }
+      return true;
   }
 
-  // Case 0: Zero children and no parent:
-  //   return null
-  if (!parentNode && !node.left && !node.right) {
-    return null;
-  }
-  // Case 1: Zero children:
-  //   set the parent that points to it to null
-  if (parentNode && !node.left && !node.right) {
-    if (parentNode.left.val === target) {
-      parentNode.left = null;
-    } else if (parentNode.right.val === target) {
-        parentNode.right = null;
-    }
-  }
   // Case 2: Two children:
   //   set the value to its in-order predecessor, then delete the predecessor
-  if (parentNode && node.right && node.left) {
-    let inOrder = inOrderPredecessor(rootNode, target);
-    deleteNodeBST(rootNode, inOrder);
-    node.val = inOrder;
+  if (node.left && node.right) {
+      let pred = inOrderPredecessor(rootNode, node.val);
+      let predParent = getParentNode(rootNode, pred);
+      node.val = pred;
+      if (predParent.left.val === pred) {
+          predParent.left = null;
+          //deleteNodeBST(predParent,pred);
+      } else {
+          predParent.right = null;
+          //deleteNodeBST(rootNode,pred);
+      }
+      return true;
   }
   // Case 3: One child:
   //   Make the parent point to the child
-  if (parentNode && (node.left || node.right)) {
-    if (node.left) {
-      parentNode.right = node.left;
-    } else {
-        parentNode.left = node.right;
-    }
+  if (!node.right) {
+      parent[pos] = node.left;
+  } else {
+      parent[pos] = node.right;
   }
 }
 
